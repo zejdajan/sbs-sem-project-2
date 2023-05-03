@@ -224,7 +224,7 @@ def large_scale(measuredRx_df, time_df, distance, d_start=20):
 
     # measured PL
     measuredPL = (max_dB[start] - np.array(max_dB[start:])) + (max_dB[start] - max_dB[len(max_dB) - 1])
-    win=100 # slide window shoud consider the wavelength and environment
+    win=50 # slide window shoud consider the wavelength and environment
     measuedPLf=[]
     for i in range(len(measuredPL)):
         imin = max(0, i-win)
@@ -311,8 +311,8 @@ if __name__ == '__main__':
     terronska_down_data = pd.read_csv('./data/terronska_dolu_data.csv', delimiter=';')  # pd.read_csv('./data/partyzanu_dolu_data.csv', delimiter=';')
     terronska_down_dist = 350  # meters
 
-    # large_scale(partyzanu_down_data, partyzanu_down_time, partyzanu_down_dist, d_start=10)
-    # large_scale(terronska_down_data, terronska_down_time, terronska_down_dist, d_start=10)
+    large_scale(partyzanu_down_data, partyzanu_down_time, partyzanu_down_dist, d_start=10)
+    large_scale(terronska_down_data, terronska_down_time, terronska_down_dist, d_start=10)
 
     crowd1_data = pd.read_csv('./data/crowd_1_data.csv', delimiter=';')
     crowd1_time_s = 104
