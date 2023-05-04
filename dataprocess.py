@@ -5,6 +5,10 @@ import logging
 import scipy.stats as sst
 
 
+#This python file is used for computations for the semesters work of SBS
+#some parts of the code are used from Moodle inspiration file Jupyter Notebook:
+#https://moodle.fel.cvut.cz/mod/resource/view.php?id=259425
+
 # Show empirical CDF and compare with Rayleigh and Rice distributions
 def rice_cdf( r, a, sigma ): # adjusting sst.rice implementation
     return sst.rice.cdf(r, a/sigma, scale=sigma)
@@ -21,7 +25,7 @@ def ecdf(data, normalize=-999.0):
     returns - (x, y) vectors in tuple    
     '''
     x = np.sort(data)
-    if 0 <= normalize <= 100.0: 
+    if 0 <= normalize <= 100.0:
         x -= np.percentile(data, normalize)
     y = np.arange(1, len(x)+1)/float(len(x))
     return (x, y)
@@ -32,12 +36,14 @@ def small_scale_crowd(measuredRx_df, time_s):
         max_dB.append(max(row[1]))
     t = np.linspace(0, time_s, len(max_dB))
     max_dB = max_dB - np.median(max_dB) # normalize to median
-    
+
     plt.plot(t, max_dB)
-    plt.xlabel('time (s)') 
+    plt.xlabel('time (s)')
     plt.ylabel('normalized RSS (dB)')
     plt.title('Crowded scenario')
     plt.grid()
+    plt.savefig('figures/Crowd_scenario1')
+
     plt.show()
 
     xcdf, ycdf = ecdf(max_dB, 50)
@@ -55,6 +61,8 @@ def small_scale_crowd(measuredRx_df, time_s):
     plt.title('CDF')
     plt.legend()
     plt.grid()
+    plt.savefig('figures/Crowd_scenario2')
+
     plt.show()
 
     plt.figure(figsize=(9, 7))
@@ -74,18 +82,20 @@ def small_scale_crowd(measuredRx_df, time_s):
 
     # Rice distribution normalized to median
     for k in [2,5,10,40]: # rice k-factor k=a**2/(2*sigma**2)
-        a = 1 
+        a = 1
         sigma = np.sqrt(a**2/(2*k))
         y_rice =  rice_cdf( x_lin, a, sigma )
         x_rice_norm = 20.0*np.log10(x_lin/rice_median(a, sigma))
         plt.semilogy(x_rice_norm, 100*y_rice, ':', label='Rice k='+str(k))
-    
+
     # empirical CDF for measured data normalized to median
     xcdf, ycdf = ecdf(max_dB, 50)
-    plt.semilogy(xcdf, 100*ycdf, label='Measured', linewidth=3)        
+    plt.semilogy(xcdf, 100*ycdf, label='Measured', linewidth=3)
 
     plt.legend()
     plt.grid()
+    plt.savefig('figures/Crowd_scenario3')
+
     plt.show()
 
 def small_scale_dense(measuredRx_df, time_s):
@@ -94,14 +104,16 @@ def small_scale_dense(measuredRx_df, time_s):
         max_dB.append(max(row[1]))
     t = np.linspace(0, time_s, len(max_dB))
     max_dB = max_dB[500:700]
-    t = t[500:700] - t[500] 
+    t = t[500:700] - t[500]
     max_dB = max_dB - np.median(max_dB) # normalize to median
-    
+
     plt.plot(t, max_dB)
-    plt.xlabel('time (s)') 
+    plt.xlabel('time (s)')
     plt.ylabel('normalized RSS (dB)')
     plt.title('Dense crowd scenario')
     plt.grid()
+    plt.savefig('figures/Dense_scenario1')
+
     plt.show()
 
     xcdf, ycdf = ecdf(max_dB, 50)
@@ -119,6 +131,8 @@ def small_scale_dense(measuredRx_df, time_s):
     plt.title('CDF')
     plt.legend()
     plt.grid()
+    plt.savefig('figures/Dense_scenario2')
+
     plt.show()
 
     plt.figure(figsize=(9, 7))
@@ -138,18 +152,20 @@ def small_scale_dense(measuredRx_df, time_s):
 
     # Rice distribution normalized to median
     for k in [2,5,10,40]: # rice k-factor k=a**2/(2*sigma**2)
-        a = 1 
+        a = 1
         sigma = np.sqrt(a**2/(2*k))
         y_rice =  rice_cdf( x_lin, a, sigma )
         x_rice_norm = 20.0*np.log10(x_lin/rice_median(a, sigma))
         plt.semilogy(x_rice_norm, 100*y_rice, ':', label='Rice k='+str(k))
-    
+
     # empirical CDF for measured data normalized to median
     xcdf, ycdf = ecdf(max_dB, 50)
-    plt.semilogy(xcdf, 100*ycdf, label='Measured', linewidth=3)        
+    plt.semilogy(xcdf, 100*ycdf, label='Measured', linewidth=3)
 
     plt.legend()
     plt.grid()
+    plt.savefig('figures/Dense_scenario3')
+
     plt.show()
 
 def small_scale_static(data, time_s):
@@ -158,12 +174,14 @@ def small_scale_static(data, time_s):
         max_dB.append(max(d))
     t = np.linspace(0, time_s, len(max_dB))
     max_dB = max_dB - np.median(max_dB) # normalize to median
-    
+
     plt.plot(t, max_dB)
-    plt.xlabel('time (s)') 
+    plt.xlabel('time (s)')
     plt.ylabel('normalized RSS (dB)')
     plt.title('Static scenario')
     plt.grid()
+    plt.savefig('figures/Static_scenario1')
+
     plt.show()
 
     xcdf, ycdf = ecdf(max_dB, 50)
@@ -181,6 +199,8 @@ def small_scale_static(data, time_s):
     plt.title('CDF')
     plt.legend()
     plt.grid()
+    plt.savefig('figures/Static_scenario2')
+
     plt.show()
 
     plt.figure(figsize=(9, 7))
@@ -200,21 +220,23 @@ def small_scale_static(data, time_s):
 
     # Rice distribution normalized to median
     for k in [2,5,10,40]: # rice k-factor k=a**2/(2*sigma**2)
-        a = 1 
+        a = 1
         sigma = np.sqrt(a**2/(2*k))
         y_rice =  rice_cdf( x_lin, a, sigma )
         x_rice_norm = 20.0*np.log10(x_lin/rice_median(a, sigma))
         plt.semilogy(x_rice_norm, 100*y_rice, ':', label='Rice k='+str(k))
-    
+
     # empirical CDF for measured data normalized to median
     xcdf, ycdf = ecdf(max_dB, 50)
-    plt.semilogy(xcdf, 100*ycdf, label='Measured', linewidth=3)        
+    plt.semilogy(xcdf, 100*ycdf, label='Measured', linewidth=3)
 
     plt.legend()
     plt.grid()
+    plt.savefig('figures/Static_scenario3')
+
     plt.show()
 
-def large_scale(measuredRx_df, time_df, distance, d_start=20):
+def large_scale(name,measuredRx_df, time_df, distance, d_start=20):
     max_dB = list()
     for row in measuredRx_df.iterrows():
         max_dB.append(max(row[1]))
@@ -224,7 +246,7 @@ def large_scale(measuredRx_df, time_df, distance, d_start=20):
 
     # measured PL
     measuredPL = (max_dB[start] - np.array(max_dB[start:])) + (max_dB[start] - max_dB[len(max_dB) - 1])
-    win=50 # slide window shoud consider the wavelength and environment
+    win=50 # slide window should consider the wavelength and environment
     measuedPLf=[]
     for i in range(len(measuredPL)):
         imin = max(0, i-win)
@@ -241,10 +263,11 @@ def large_scale(measuredRx_df, time_df, distance, d_start=20):
     logging.info(f"sigma = {sigma} dB, L1 = {L1} dB")
 
     plt.plot(distances, max_dB[start:])
-    plt.title('Signal Strenght vs. Distance')
+    plt.title('Signal Strength vs. Distance')
     plt.xlabel('distance [m]')
     plt.ylabel('signal [dB]')
     plt.grid()
+    plt.savefig('figures/Signal_StrengthVDistance_'+name)
     plt.show()
 
     plt.semilogx(distances, PLpredict, label=f"n={0.1 * n}")
@@ -254,6 +277,8 @@ def large_scale(measuredRx_df, time_df, distance, d_start=20):
     plt.ylabel('PL [dB]')
     plt.legend()
     plt.grid()
+    plt.savefig('figures/Mean_Path_LossVMeasured_'+name)
+
     plt.show()
 
     # PDF
@@ -265,6 +290,8 @@ def large_scale(measuredRx_df, time_df, distance, d_start=20):
     plt.plot(pdfx, ppdf, label='Normal distribution fit')
     plt.legend()
     plt.grid()
+    plt.savefig('figures/Statistics_'+name)
+
     plt.show()
 
     plt.figure(figsize=(9, 7))
@@ -276,6 +303,8 @@ def large_scale(measuredRx_df, time_df, distance, d_start=20):
     plt.ylabel('Percentage of locations RSS < predicted RSS (%)')
     plt.legend()
     plt.grid()
+    plt.savefig('figures/Prediction1_'+name)
+
     plt.show()
 
     Pn = 20
@@ -298,6 +327,8 @@ def large_scale(measuredRx_df, time_df, distance, d_start=20):
     plt.xlabel('Distance (m)')
     plt.ylabel('RSS (dBm)')
     plt.grid()
+    plt.savefig('figures/Prediction2'+name)
+
     plt.show()
 
 
@@ -311,13 +342,13 @@ if __name__ == '__main__':
     terronska_down_data = pd.read_csv('./data/terronska_dolu_data.csv', delimiter=';')  # pd.read_csv('./data/partyzanu_dolu_data.csv', delimiter=';')
     terronska_down_dist = 350  # meters
 
-    large_scale(partyzanu_down_data, partyzanu_down_time, partyzanu_down_dist, d_start=10)
-    large_scale(terronska_down_data, terronska_down_time, terronska_down_dist, d_start=10)
+    large_scale("partyzanu",partyzanu_down_data, partyzanu_down_time, partyzanu_down_dist, d_start=10)
+    large_scale("terronska",terronska_down_data, terronska_down_time, terronska_down_dist, d_start=10)
 
     crowd1_data = pd.read_csv('./data/crowd_1_data.csv', delimiter=';')
     crowd1_time_s = 104
 
-    crowd2_data = pd.read_csv('./data/crowd_2_data.csv', delimiter=';') 
+    crowd2_data = pd.read_csv('./data/crowd_2_data.csv', delimiter=';')
     crowd2_time_s = 117
 
     static1_data = pd.read_csv('./data/static_1_data.csv', delimiter=';').values.tolist()
