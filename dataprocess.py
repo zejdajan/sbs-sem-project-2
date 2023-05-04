@@ -35,7 +35,18 @@ def small_scale_crowd(measuredRx_df, time_s):
     for row in measuredRx_df.iterrows():
         max_dB.append(max(row[1]))
     t = np.linspace(0, time_s, len(max_dB))
+
+    plt.plot(t, max_dB)
+    plt.xlabel('time (s)')
+    plt.ylabel('Measured RSS (dB)')
+    plt.title('Crowd scenario')
+    plt.grid()
+    plt.savefig('figures/Crowd_scenario1_Measured')
+
     max_dB = max_dB - np.median(max_dB) # normalize to median
+
+
+
 
     plt.plot(t, max_dB)
     plt.xlabel('time (s)')
@@ -104,7 +115,19 @@ def small_scale_dense(measuredRx_df, time_s):
         max_dB.append(max(row[1]))
     t = np.linspace(0, time_s, len(max_dB))
     max_dB = max_dB[500:700]
-    t = t[500:700] - t[500]
+    #1100-we want 3x bigger interval
+    t = t[500:1100] - t[500]
+
+    max_dB=max_dB+max_dB+max_dB
+
+   
+    plt.plot(t, max_dB)
+    plt.xlabel('time (s)')
+    plt.ylabel('Measured RSS (dB)')
+    plt.title('Dense scenario')
+    plt.grid()
+    plt.savefig('figures/Dense_scenario1_Measured')
+
     max_dB = max_dB - np.median(max_dB) # normalize to median
 
     plt.plot(t, max_dB)
@@ -173,6 +196,15 @@ def small_scale_static(data, time_s):
     for d in data:
         max_dB.append(max(d))
     t = np.linspace(0, time_s, len(max_dB))
+
+    plt.plot(t, max_dB)
+    plt.xlabel('time (s)')
+    plt.ylabel('Measured RSS (dB)')
+    plt.title('Static scenario')
+    plt.grid()
+    plt.savefig('figures/Static_scenario1_Measured')
+
+    plt.show()
     max_dB = max_dB - np.median(max_dB) # normalize to median
 
     plt.plot(t, max_dB)
