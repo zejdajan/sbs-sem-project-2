@@ -42,7 +42,7 @@ def small_scale_crowd(measuredRx_df, time_s):
     plt.title('Crowd scenario')
     plt.grid()
     plt.savefig('figures/Crowd_scenario1_Measured')
-
+    plt.show()
     max_dB = max_dB - np.median(max_dB) # normalize to median
 
 
@@ -120,14 +120,14 @@ def small_scale_dense(measuredRx_df, time_s):
 
     max_dB=max_dB+max_dB+max_dB
 
-   
+
     plt.plot(t, max_dB)
     plt.xlabel('time (s)')
     plt.ylabel('Measured RSS (dB)')
     plt.title('Dense scenario')
     plt.grid()
     plt.savefig('figures/Dense_scenario1_Measured')
-
+    plt.show()
     max_dB = max_dB - np.median(max_dB) # normalize to median
 
     plt.plot(t, max_dB)
@@ -203,7 +203,6 @@ def small_scale_static(data, time_s):
     plt.title('Static scenario')
     plt.grid()
     plt.savefig('figures/Static_scenario1_Measured')
-
     plt.show()
     max_dB = max_dB - np.median(max_dB) # normalize to median
 
