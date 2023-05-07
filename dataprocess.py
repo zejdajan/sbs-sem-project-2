@@ -3,8 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import logging
 import scipy.stats as sst
-import statistics
-
 
 #This python file is used for computations for the semesters work of SBS
 #some parts of the code are used from Moodle inspiration file Jupyter Notebook:
@@ -38,9 +36,9 @@ def small_scale_crowd(measuredRx_df, time_s):
     t = np.linspace(0, time_s, len(max_dB))
 
 
-    print("Max: ", max(max_dB))
-    print("Min: ", min(max_dB))
-    print("Median: ", statistics.median(max_dB))
+    logging.info(f"Max: {np.max(max_dB)} dB")
+    logging.info(f"Min: {np.min(max_dB)} dB")
+    logging.info(f"Median: {np.median(max_dB)} dB")
 
     plt.plot(t, max_dB)
     plt.xlabel('time (s)')
@@ -51,16 +49,12 @@ def small_scale_crowd(measuredRx_df, time_s):
     plt.show()
     max_dB = max_dB - np.median(max_dB) # normalize to median
 
-
-
-
     plt.plot(t, max_dB)
     plt.xlabel('time (s)')
     plt.ylabel('normalized RSS (dB)')
     plt.title('Crowded scenario')
     plt.grid()
     plt.savefig('figures/Crowd_scenario1')
-
     plt.show()
 
     xcdf, ycdf = ecdf(max_dB, 50)
@@ -107,12 +101,15 @@ def small_scale_crowd(measuredRx_df, time_s):
 
     # empirical CDF for measured data normalized to median
     xcdf, ycdf = ecdf(max_dB, 50)
+    percentile = [xcdf[np.floor(ycdf*100) == 1][0], xcdf[np.floor(ycdf*100) == 10][0], xcdf[np.floor(ycdf*100) == 50][0], 
+                  xcdf[np.floor(ycdf*100) == 90][0]]
+    logging.info(f"Percentile:")
+    for i, p in enumerate([1, 10, 50, 90]):
+        logging.info(f"{p} %: {percentile[i]} dB")
     plt.semilogy(xcdf, 100*ycdf, label='Measured', linewidth=3)
-
     plt.legend()
     plt.grid()
     plt.savefig('figures/Crowd_scenario3')
-
     plt.show()
 
 def small_scale_dense(measuredRx_df, time_s):
@@ -123,13 +120,11 @@ def small_scale_dense(measuredRx_df, time_s):
     max_dB = max_dB[500:700]
     #1100-we want 3x bigger interval
     t = t[500:1100] - t[500]
-
     max_dB=max_dB+max_dB+max_dB
 
-
-    print("Max: ", max(max_dB))
-    print("Min: ", min(max_dB))
-    print("Median: ", statistics.median(max_dB))
+    logging.info(f"Max: {np.max(max_dB)} dB")
+    logging.info(f"Min: {np.min(max_dB)} dB")
+    logging.info(f"Median: {np.median(max_dB)} dB")
 
     plt.plot(t, max_dB)
     plt.xlabel('time (s)')
@@ -146,7 +141,6 @@ def small_scale_dense(measuredRx_df, time_s):
     plt.title('Dense crowd scenario')
     plt.grid()
     plt.savefig('figures/Dense_scenario1')
-
     plt.show()
 
     xcdf, ycdf = ecdf(max_dB, 50)
@@ -165,7 +159,6 @@ def small_scale_dense(measuredRx_df, time_s):
     plt.legend()
     plt.grid()
     plt.savefig('figures/Dense_scenario2')
-
     plt.show()
 
     plt.figure(figsize=(9, 7))
@@ -193,6 +186,11 @@ def small_scale_dense(measuredRx_df, time_s):
 
     # empirical CDF for measured data normalized to median
     xcdf, ycdf = ecdf(max_dB, 50)
+    percentile = [xcdf[np.floor(ycdf*100) == 1][0], xcdf[np.floor(ycdf*100) == 10][0], xcdf[np.floor(ycdf*100) == 50][0], 
+                  xcdf[np.floor(ycdf*100) == 90][0]]
+    logging.info(f"Percentile:")
+    for i, p in enumerate([1, 10, 50, 90]):
+        logging.info(f"{p} %: {percentile[i]} dB")
     plt.semilogy(xcdf, 100*ycdf, label='Measured', linewidth=3)
 
     plt.legend()
@@ -207,10 +205,9 @@ def small_scale_static(data, time_s):
         max_dB.append(max(d))
     t = np.linspace(0, time_s, len(max_dB))
 
-
-    print("Max: ", max(max_dB))
-    print("Min: ", min(max_dB))
-    print("Median: ", statistics.median(max_dB))
+    logging.info(f"Max: {np.max(max_dB)} dB")
+    logging.info(f"Min: {np.min(max_dB)} dB")
+    logging.info(f"Median: {np.median(max_dB)} dB")
 
     plt.plot(t, max_dB)
     plt.xlabel('time (s)')
@@ -227,7 +224,6 @@ def small_scale_static(data, time_s):
     plt.title('Static scenario')
     plt.grid()
     plt.savefig('figures/Static_scenario1')
-
     plt.show()
 
     xcdf, ycdf = ecdf(max_dB, 50)
@@ -246,7 +242,6 @@ def small_scale_static(data, time_s):
     plt.legend()
     plt.grid()
     plt.savefig('figures/Static_scenario2')
-
     plt.show()
 
     plt.figure(figsize=(9, 7))
@@ -274,12 +269,15 @@ def small_scale_static(data, time_s):
 
     # empirical CDF for measured data normalized to median
     xcdf, ycdf = ecdf(max_dB, 50)
+    percentile = [xcdf[np.floor(ycdf*100) == 1][0], xcdf[np.floor(ycdf*100) == 10][0], xcdf[np.floor(ycdf*100) == 50][0], 
+                  xcdf[np.floor(ycdf*100) == 90][0]]
+    logging.info(f"Percentile:")
+    for i, p in enumerate([1, 10, 50, 90]):
+        logging.info(f"{p} %: {percentile[i]}")
     plt.semilogy(xcdf, 100*ycdf, label='Measured', linewidth=3)
-
     plt.legend()
     plt.grid()
     plt.savefig('figures/Static_scenario3')
-
     plt.show()
 
 def large_scale(name,measuredRx_df, time_df, distance, d_start=20):
@@ -306,7 +304,9 @@ def large_scale(name,measuredRx_df, time_df, distance, d_start=20):
     err = PLpredict - measuredPL
     sigma = np.std(err)
 
-    logging.info(f"sigma = {sigma} dB, L1 = {L1} dB")
+    logging.info(f"n = {0.1 * n}")
+    logging.info(f"sigma = {sigma} dB")
+    logging.info(f"L1 = {L1} dB")
 
     plt.plot(distances, max_dB[start:])
     plt.title('Signal Strength vs. Distance')
@@ -324,7 +324,6 @@ def large_scale(name,measuredRx_df, time_df, distance, d_start=20):
     plt.legend()
     plt.grid()
     plt.savefig('figures/Mean_Path_LossVMeasured_'+name)
-
     plt.show()
 
     # PDF
@@ -337,7 +336,6 @@ def large_scale(name,measuredRx_df, time_df, distance, d_start=20):
     plt.legend()
     plt.grid()
     plt.savefig('figures/Statistics_'+name)
-
     plt.show()
 
     plt.figure(figsize=(9, 7))
@@ -350,7 +348,6 @@ def large_scale(name,measuredRx_df, time_df, distance, d_start=20):
     plt.legend()
     plt.grid()
     plt.savefig('figures/Prediction1_'+name)
-
     plt.show()
 
     Pn = 20
@@ -374,13 +371,13 @@ def large_scale(name,measuredRx_df, time_df, distance, d_start=20):
     plt.ylabel('RSS (dBm)')
     plt.grid()
     plt.savefig('figures/Prediction2'+name)
-
     plt.show()
 
 
 if __name__ == '__main__':
 
-    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S')
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S', 
+                        filename='dataprocess.log')
     partyzanu_down_time = pd.read_csv('./data/partyzanu_dolu_casy.csv', delimiter=';')
     partyzanu_down_data = pd.read_csv('./data/partyzanu_dolu_data.csv', delimiter=';')
     partyzanu_down_dist = 350  # meters
@@ -389,7 +386,10 @@ if __name__ == '__main__':
     terronska_down_data = pd.read_csv('./data/terronska_dolu_data.csv', delimiter=';')  # pd.read_csv('./data/partyzanu_dolu_data.csv', delimiter=';')
     terronska_down_dist = 350  # meters
 
+    logging.info("Large Scale - Partyzanu")
     large_scale("partyzanu",partyzanu_down_data, partyzanu_down_time, partyzanu_down_dist, d_start=10)
+    
+    logging.info("Large Scale - Terronska")
     large_scale("terronska",terronska_down_data, terronska_down_time, terronska_down_dist, d_start=10)
 
 
@@ -404,11 +404,12 @@ if __name__ == '__main__':
     static3_data = pd.read_csv('./data/static_3_data.csv', delimiter=';').values.tolist()
     static_data = static1_data + static2_data + static3_data
     static_time_s = 58
-    print("Static")
+
+    logging.info("Static")
     small_scale_static(static_data, static_time_s)
 
-    print("Crowd")
+    logging.info("Crowd")
     small_scale_crowd(crowd2_data, crowd2_time_s)
 
-    print("Dense")
+    logging.info("Dense")
     small_scale_dense(crowd1_data, crowd1_time_s)
