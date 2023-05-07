@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import logging
 import scipy.stats as sst
+import statistics
 
 
 #This python file is used for computations for the semesters work of SBS
@@ -35,6 +36,11 @@ def small_scale_crowd(measuredRx_df, time_s):
     for row in measuredRx_df.iterrows():
         max_dB.append(max(row[1]))
     t = np.linspace(0, time_s, len(max_dB))
+
+
+    print("Max: ", max(max_dB))
+    print("Min: ", min(max_dB))
+    print("Median: ", statistics.median(max_dB))
 
     plt.plot(t, max_dB)
     plt.xlabel('time (s)')
@@ -121,6 +127,10 @@ def small_scale_dense(measuredRx_df, time_s):
     max_dB=max_dB+max_dB+max_dB
 
 
+    print("Max: ", max(max_dB))
+    print("Min: ", min(max_dB))
+    print("Median: ", statistics.median(max_dB))
+
     plt.plot(t, max_dB)
     plt.xlabel('time (s)')
     plt.ylabel('Measured RSS (dB)')
@@ -196,6 +206,11 @@ def small_scale_static(data, time_s):
     for d in data:
         max_dB.append(max(d))
     t = np.linspace(0, time_s, len(max_dB))
+
+
+    print("Max: ", max(max_dB))
+    print("Min: ", min(max_dB))
+    print("Median: ", statistics.median(max_dB))
 
     plt.plot(t, max_dB)
     plt.xlabel('time (s)')
@@ -364,6 +379,7 @@ def large_scale(name,measuredRx_df, time_df, distance, d_start=20):
 
 
 if __name__ == '__main__':
+
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S')
     partyzanu_down_time = pd.read_csv('./data/partyzanu_dolu_casy.csv', delimiter=';')
     partyzanu_down_data = pd.read_csv('./data/partyzanu_dolu_data.csv', delimiter=';')
@@ -376,6 +392,7 @@ if __name__ == '__main__':
     large_scale("partyzanu",partyzanu_down_data, partyzanu_down_time, partyzanu_down_dist, d_start=10)
     large_scale("terronska",terronska_down_data, terronska_down_time, terronska_down_dist, d_start=10)
 
+
     crowd1_data = pd.read_csv('./data/crowd_1_data.csv', delimiter=';')
     crowd1_time_s = 104
 
@@ -387,7 +404,11 @@ if __name__ == '__main__':
     static3_data = pd.read_csv('./data/static_3_data.csv', delimiter=';').values.tolist()
     static_data = static1_data + static2_data + static3_data
     static_time_s = 58
-
+    print("Static")
     small_scale_static(static_data, static_time_s)
+
+    print("Crowd")
     small_scale_crowd(crowd2_data, crowd2_time_s)
+
+    print("Dense")
     small_scale_dense(crowd1_data, crowd1_time_s)
