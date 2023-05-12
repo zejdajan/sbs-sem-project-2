@@ -41,7 +41,7 @@ def small_scale_crowd(measuredRx_df, time_s):
     logging.info(f"Median: {np.median(max_dB)} dB")
 
     plt.plot(t, max_dB)
-    plt.xlabel('time (s)')
+    plt.xlabel('Time (s)')
     plt.ylabel('Measured RSS (dB)')
     plt.title('Crowd scenario')
     plt.grid()
@@ -50,8 +50,8 @@ def small_scale_crowd(measuredRx_df, time_s):
     max_dB = max_dB - np.median(max_dB) # normalize to median
 
     plt.plot(t, max_dB)
-    plt.xlabel('time (s)')
-    plt.ylabel('normalized RSS (dB)')
+    plt.xlabel('Time (s)')
+    plt.ylabel('Normalized RSS (dB)')
     plt.title('Crowded scenario')
     plt.grid()
     plt.savefig('figures/Crowd_scenario1')
@@ -136,8 +136,8 @@ def small_scale_dense(measuredRx_df, time_s):
     max_dB = max_dB - np.median(max_dB) # normalize to median
 
     plt.plot(t, max_dB)
-    plt.xlabel('time (s)')
-    plt.ylabel('normalized RSS (dB)')
+    plt.xlabel('Time (s)')
+    plt.ylabel('Normalized RSS (dB)')
     plt.title('Dense crowd scenario')
     plt.grid()
     plt.savefig('figures/Dense_scenario1')
@@ -210,7 +210,7 @@ def small_scale_static(data, time_s):
     logging.info(f"Median: {np.median(max_dB)} dB")
 
     plt.plot(t, max_dB)
-    plt.xlabel('time (s)')
+    plt.xlabel('Time (s)')
     plt.ylabel('Measured RSS (dB)')
     plt.title('Static scenario')
     plt.grid()
@@ -219,8 +219,8 @@ def small_scale_static(data, time_s):
     max_dB = max_dB - np.median(max_dB) # normalize to median
 
     plt.plot(t, max_dB)
-    plt.xlabel('time (s)')
-    plt.ylabel('normalized RSS (dB)')
+    plt.xlabel('Time (s)')
+    plt.ylabel('Normalized RSS (dB)')
     plt.title('Static scenario')
     plt.grid()
     plt.savefig('figures/Static_scenario1')
@@ -310,8 +310,8 @@ def large_scale(name,measuredRx_df, time_df, distance, d_start=20):
 
     plt.plot(distances, max_dB[start:])
     plt.title('Signal Strength vs. Distance')
-    plt.xlabel('distance [m]')
-    plt.ylabel('signal [dB]')
+    plt.xlabel('Distance [m]')
+    plt.ylabel('RSS [dB]')
     plt.grid()
     plt.savefig('figures/Signal_StrengthVDistance_'+name)
     plt.show()
@@ -319,7 +319,7 @@ def large_scale(name,measuredRx_df, time_df, distance, d_start=20):
     plt.semilogx(distances, PLpredict, label=f"n={0.1 * n}")
     plt.semilogx(distances, measuredPL)
     plt.title('Mean Path Loss Model vs. Measured Path Loss')
-    plt.xlabel('distance')
+    plt.xlabel('Distance [m]')
     plt.ylabel('PL [dB]')
     plt.legend()
     plt.grid()
@@ -378,6 +378,9 @@ if __name__ == '__main__':
 
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S', 
                         filename='dataprocess.log')
+
+
+    #DOLU
     partyzanu_down_time = pd.read_csv('./data/partyzanu_dolu_casy.csv', delimiter=';')
     partyzanu_down_data = pd.read_csv('./data/partyzanu_dolu_data.csv', delimiter=';')
     partyzanu_down_dist = 350  # meters
@@ -386,13 +389,30 @@ if __name__ == '__main__':
     terronska_down_data = pd.read_csv('./data/terronska_dolu_data.csv', delimiter=';')  # pd.read_csv('./data/partyzanu_dolu_data.csv', delimiter=';')
     terronska_down_dist = 350  # meters
 
-    logging.info("Large Scale - Partyzanu")
-    large_scale("partyzanu",partyzanu_down_data, partyzanu_down_time, partyzanu_down_dist, d_start=10)
-    
-    logging.info("Large Scale - Terronska")
-    large_scale("terronska",terronska_down_data, terronska_down_time, terronska_down_dist, d_start=10)
+    logging.info("Large Scale - Partyzanu dolu")
+    large_scale("partyzanu_dolu",partyzanu_down_data, partyzanu_down_time, partyzanu_down_dist, d_start=40)
+    logging.info("Large Scale - Terronska dolu")
+    large_scale("terronska_dolu",terronska_down_data, terronska_down_time, terronska_down_dist, d_start=40)
 
 
+
+    #NAHORU
+    partyzanu_up_time = pd.read_csv('./data/partyzanu_nahoru_casy.csv', delimiter=';')
+    partyzanu_up_data = pd.read_csv('./data/partyzanu_nahoru_data.csv', delimiter=';')
+    partyzanu_up_dist = 350  # meters
+
+    terronska_up_time = pd.read_csv('./data/terronska_nahoru_casy.csv',delimiter=';')
+    terronska_up_data = pd.read_csv('./data/terronska_nahoru_data.csv',delimiter=';')
+    terronska_up_dist = 350  # meters
+
+    logging.info("Large Scale - Partyzanu nahoru")
+    large_scale("partyzanu_nahoru", partyzanu_up_data, partyzanu_up_time, partyzanu_up_dist, d_start=40)
+
+    logging.info("Large Scale - Terronska nahoru")
+    large_scale("terronska_nahoru", terronska_up_data, terronska_up_time, terronska_up_dist, d_start=40)
+
+
+    #MERENI UNIKU
     crowd1_data = pd.read_csv('./data/crowd_1_data.csv', delimiter=';')
     crowd1_time_s = 104
 
