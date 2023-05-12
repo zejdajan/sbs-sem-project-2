@@ -127,7 +127,7 @@ def small_scale_dense(measuredRx_df, time_s):
     logging.info(f"Median: {np.median(max_dB)} dB")
 
     plt.plot(t, max_dB)
-    plt.xlabel('time (s)')
+    plt.xlabel('Time (s)')
     plt.ylabel('Measured RSS (dB)')
     plt.title('Dense scenario')
     plt.grid()
@@ -280,10 +280,15 @@ def small_scale_static(data, time_s):
     plt.savefig('figures/Static_scenario3')
     plt.show()
 
-def large_scale(name,measuredRx_df, time_df, distance, d_start=20):
+def large_scale(name,measuredRx_df, time_df, distance, d_start=20, flip=0):
     max_dB = list()
     for row in measuredRx_df.iterrows():
         max_dB.append(max(row[1]))
+
+    #pokud jdmeme k antene-chceme odriznout to u anteny, ne na konci-proto je tu ten flip
+    if(flip==1):
+        max_dB=np.flip(max_dB)
+
     distances = np.linspace(1, distance, time_df.shape[1])[:len(max_dB)]
     start = (d_start * len(distances) // distance)
     distances = distances[start:]
@@ -406,10 +411,10 @@ if __name__ == '__main__':
     terronska_up_dist = 350  # meters
 
     logging.info("Large Scale - Partyzanu nahoru")
-    large_scale("partyzanu_nahoru", partyzanu_up_data, partyzanu_up_time, partyzanu_up_dist, d_start=40)
+    large_scale("partyzanu_nahoru", partyzanu_up_data, partyzanu_up_time, partyzanu_up_dist, d_start=40,flip=1)
 
     logging.info("Large Scale - Terronska nahoru")
-    large_scale("terronska_nahoru", terronska_up_data, terronska_up_time, terronska_up_dist, d_start=40)
+    large_scale("terronska_nahoru", terronska_up_data, terronska_up_time, terronska_up_dist, d_start=40,flip=1)
 
 
     #MERENI UNIKU
