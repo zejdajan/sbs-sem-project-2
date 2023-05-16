@@ -1,49 +1,218 @@
 \chapter{Úniky způsobené vícecestným šířením}
 Pro tento typ měření jsme potřebovali lokaci, kde bude velký pohyb chodců. Nejlépe takovou, aby docházelo k zastínění, ale také, aby zde ve vhodnou chvíli pohyb nebyl žádný nebo jen minimální. Nakonec jsme se rozhodli provést měření před vchodem do Technické menzy v Dejvicích. Čas měření nám velice vyhovoval, jelikož v tuto dobu - kolem 12. hodiny - je zde největší hustota lidí. Vzdálenost mezi anténami byla při měření 24 metrů a jednotlivé antény byly umístěny ve výšce 1,4 metru.
 
-Obrazek anteny
+\begin{figure}[h!]
+    \centering
+    \includegraphics[angle=270,scale=0.08]{img/antenna_uniky_menza.jpg}
+    \caption{Vysílací anténa umístěná vedle Technické Menzy bez zastínění}
+    \label{fig:my_label}
+\end{figure}
 
-Obrazek menzy - vchodu
+\begin{figure}[h!]
+    \centering
+    \includegraphics[,scale=0.1]{img/foto_uniky_menza.jpg}
+    \caption{Fotka probíhajícího měření před Technickou menzou bez zastínění}
+    \label{fig:my_label}
+\end{figure}
 
 \section{Měření bez zastínění}
 Pro tento typ měření jsme se snažili najít vhodnou chvíli, kdy se mezi anténami nebude nikdo pohybovat. Bohužel se nám nepodařilo najít delší úsek, alespoň minutový, kdy by byly ideální podmínky. Z tohoto důvodu jsme vybrali několik úseků z více měření, které splňovali toto kritérium a tyto úseky jsme následně spojili.
 
-Tabulka
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|}
+  \hline
+   & RSS \\
+  \hline
+  Min & -78.1 dBm\\
+  \hline
+  Max & -57.9 dBm\\
+  \hline
+  Median & -65.6 dBm \\
+  \hline
+\end{tabular}
+\caption{Tabulka maximální hodnoty, minimální hodnoty a medianu naměřených před Technickou menzou}
+\end{table}
 
-Tabulka
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|}
+  \hline
+   Percentil &  \\
+  \hline
+  1 \% & -10.4 dB\\
+  \hline
+  10 \% & -6.2 dB\\
+  \hline
+  50 \% & 0 dB \\
+  \hline1 
+  90 \% & 3.69 dB \\
+  \hline
+\end{tabular}
+\caption{Tabulka percentilů z dat naměřených před Technickou menzou}
+\end{table}
 
-Obrazek - Distribuční funkce bez zastínění - DETAILNĚJŠÍ (druhou vymazat)
+\clearpage
 
-Obrazek - normalikovane hodnoty v case
+\begin{figure}[h!]
+    \centering
+    \includegraphics[,scale=0.64]{img/Static_scenario3.png}
+    \caption{Distribuční funkce naměřených hodnot bez zastínění}
+    \label{fig:my_label}
+\end{figure}
 
-Obrazek - nenormalizovaný ???????????????????
+\begin{figure}[h!]
+    \centering
+    \includegraphics[,scale=0.85]{img/Static_scenario1.png}
+    \caption{Naměřené hodnoty v čase, normalizované}
+    \label{fig:my_label}
+\end{figure}
+
+\clearpage
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[,scale=0.85]{img/Static_scenario1_Measured.png}
+    \caption{Naměřené hodnoty v čase(nechat?)}
+    \label{fig:my_label}
+\end{figure}
 
 \section{Případ dynamického zastínění}
 Pro tento typ měření jsme záměrně volili intervaly, kdy se budou mezi anténami pohybovat v dostatečném počtu lidé. Takový interval nebylo těžké nalézt, a to ani dokonce v dostatečně dlouhém časovém intervalu, který jsme si na začátku měření stanovili.
 
-Tabulka
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|}
+  \hline
+   & RSS \\
+  \hline
+  Min & -95.1 dBm\\
+  \hline
+  Max & -61.0 dBm\\
+  \hline
+  Median & -72.5 dBm \\
+  \hline
+\end{tabular}
+\caption{Tabulka maximální hodnoty, minimální hodnoty a medianu naměřených před Technickou menzou}
+\end{table}
 
-Tabulka
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|}
+  \hline
+   Percentil &  \\
+  \hline
+  1 \% & -16.59 dB\\
+  \hline
+  10 \% & -9.0 dB\\
+  \hline
+  50 \% & 0 dB \\
+  \hline1 
+  90 \% & 6.2 dB \\
+  \hline
+\end{tabular}
+\caption{Tabulka percentilů z dat naměřených před Technickou menzou}
+\end{table}
 
-Obrazek - Distribuční funkce bez zastínění - DETAILNĚJŠÍ (druhou vymazat) A TU JEDNU NUTO OPRAVIT!!!
+\clearpage
 
-Obrazek - normalikovane hodnoty v case - VYSTREDIT VUCI STREDNI HODNOTE
 
-Obrazek - nenormalizovaný ??????????????????? - STREDNI HODNOTA!!!
+%Obrazek - Distribuční funkce bez zastínění - DETAILNĚJŠÍ (druhou vymazat) A TU JEDNU NUTO OPRAVIT!!!
+\begin{figure}[h!]
+    \centering
+    \includegraphics[,scale=0.6]{img/Crowd_scenario3.png}
+    \caption{Distribuční funkce naměřených hodnot s dynamickým zastíněním(je ještě potřeba opravit?)}
+    \label{fig:my_label}
+\end{figure}
+% Obrazek - normalikovane hodnoty v case - VYSTREDIT VUCI STREDNI HODNOTE
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[,scale=0.85]{img/Crowd_scenario1.png}
+    \caption{Naměřené hodnoty v čase, normalizované}
+    \label{fig:my_label}
+\end{figure}
+\clearpage
+
+
+
+% Obrazek - nenormalizovaný ??????????????????? - STREDNI HODNOTA!!!
+\begin{figure}[h!]
+    \centering
+    \includegraphics[,scale=0.85]{img/Crowd_scenario1_Measured.png}
+    \caption{Naměřené hodnoty v čase(nechat?)}
+    \label{fig:my_label}
+\end{figure}
+
 
 \section{Případ úplného zastínění}
 Při tomto scénáři jsme se snažili najít takový okamžik, kdy bylo co největší zastínění mezi anténami. Největší zastínění se nám podařilo získat, když většina osob procházela dveřmi do menzy. Navíc, my jako členové týmu jsme se pohybovali mezi anténami pro zvýšení efektu. Bohužel se nám nepodařilo zachytit dostatečně dlouhý úsek, kdy by došlo k úplnému zastínění. Z toho důvodu jsme vybrali z měření kratší úsek, který byl pro další analýzu vložen vícekrát za sebe. Tím dojde alespoň k vyhlazení křivky. Kolega, který nás měl na starost, nám sám řekl, že v tomto scénáři je úplné zastínění velice těžko proveditelné, ač jsme se snažili sebevíce. Proto jsme alespoň zkusili analyzovat následující krátký úsek měření, než tuto část úplně vynechat. 
 
-Tabulka
 
-Tabulka
 
-Obrazek - Distribuční funkce bez zastínění - DETAILNĚJŠÍ (druhou vymazat) A TU JEDNU NUTO OPRAVIT!!!
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|}
+  \hline
+   & RSS \\
+  \hline
+  Min & -92.6 dBm\\
+  \hline
+  Max & -69.9 dBm\\
+  \hline
+  Median & -80.8 dBm \\
+  \hline
+\end{tabular}
+\caption{Tabulka maximální hodnoty, minimální hodnoty a medianu naměřených před Technickou menzou}
+\end{table}
 
-Obrazek - normalikovane hodnoty v case - VYSTREDIT VUCI STREDNI HODNOTE
+\clearpage
 
-Obrazek - nenormalizovaný ??????????????????? - STREDNI HODNOTA!!!
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|}
+  \hline
+   Percentil &  \\
+  \hline
+  1 \% & -10.9 dB\\
+  \hline
+  10 \% & -6.4 dB\\
+  \hline
+  50 \% & 0 dB \\
+  \hline1 
+  90 \% & 7.79 dB \\
+  \hline
+\end{tabular}
+\caption{Tabulka percentilů z dat naměřených před Technickou menzou}
+\end{table}
 
+
+
+%Obrazek - Distribuční funkce bez zastínění - DETAILNĚJŠÍ (druhou vymazat) A TU JEDNU NUTO OPRAVIT!!!
+\begin{figure}[h!]
+    \centering
+    \includegraphics[,scale=0.64]{img/Dense_scenario3.png}
+    \caption{Distribuční funkce naměřených hodnot s dynamickým zastíněním(je ještě potřeba opravit?)}
+    \label{fig:my_label}
+\end{figure}
+
+\clearpage
+% Obrazek - normalikovane hodnoty v case - VYSTREDIT VUCI STREDNI HODNOTE
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[,scale=0.85]{img/Dense_scenario1.png}
+    \caption{Naměřené hodnoty v čase, normalizované}
+    \label{fig:my_label}
+\end{figure}
+
+% Obrazek - nenormalizovaný ??????????????????? - STREDNI HODNOTA!!!
+\begin{figure}[h!]
+    \centering
+    \includegraphics[,scale=0.85]{img/Dense_scenario1_Measured.png}
+    \caption{Naměřené hodnoty v čase(nechat?)}
+    \label{fig:my_label}
+\end{figure}
 
 
 
