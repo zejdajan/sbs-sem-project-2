@@ -35,6 +35,9 @@ def small_scale_crowd(measuredRx_df, time_s):
         max_dB.append(max(row[1]))
     t = np.linspace(0, time_s, len(max_dB))
 
+    start = (70 * len(t) // time_s)
+    max_dB = max_dB[start:]
+    t = t[start:]
 
     logging.info(f"Max: {np.max(max_dB)} dB")
     logging.info(f"Min: {np.min(max_dB)} dB")
@@ -116,11 +119,26 @@ def small_scale_dense(measuredRx_df, time_s):
     max_dB = list()
     for row in measuredRx_df.iterrows():
         max_dB.append(max(row[1]))
+    max_dB = max_dB[0:1200]
     t = np.linspace(0, time_s, len(max_dB))
-    max_dB = max_dB[500:700]
-    #1100-we want 3x bigger interval
-    t = t[500:1100] - t[500]
-    max_dB=max_dB+max_dB+max_dB
+
+    start = (20 * len(t) // time_s)
+    stop = (40 * len(t) // time_s)
+    max_dB1 = max_dB[:start]
+    max_dB2 = max_dB[start:stop]
+    max_dB3 = max_dB[stop:]
+
+    mean1 = np.mean(max_dB1)
+    mean2 = np.mean(max_dB2)
+    mean3 = np.mean(max_dB3)
+    norm1 = mean1 - mean2
+    norm2 = mean3 - mean2
+    max_dB_tmp = [max_dB1 - norm1, max_dB2, max_dB3 - norm2]
+
+    max_dB = list()
+    for m in max_dB_tmp:
+        for val in m:
+            max_dB.append(val)
 
     logging.info(f"Max: {np.max(max_dB)} dB")
     logging.info(f"Min: {np.min(max_dB)} dB")
@@ -200,9 +218,16 @@ def small_scale_dense(measuredRx_df, time_s):
     plt.show()
 
 def small_scale_static(data, time_s):
+    meas_dB = [[], [], []]
+    for i, lst in enumerate(data):
+        for d in lst:
+            meas_dB[i].append(max(d))
+        meas_dB[i] = np.array(meas_dB[i]) - np.median(meas_dB[i])
+
     max_dB = list()
-    for d in data:
-        max_dB.append(max(d))
+    for m in meas_dB:
+        for val in m:
+            max_dB.append(val)
     t = np.linspace(0, time_s, len(max_dB))
 
     logging.info(f"Max: {np.max(max_dB)} dB")
@@ -216,7 +241,7 @@ def small_scale_static(data, time_s):
     plt.grid()
     plt.savefig('figures/Static_scenario1_Measured')
     plt.show()
-    max_dB = max_dB - np.median(max_dB) # normalize to median
+   # max_dB = max_dB - np.median(max_dB) # normalize to median
 
     plt.plot(t, max_dB)
     plt.xlabel('Time (s)')
@@ -423,7 +448,7 @@ if __name__ == '__main__':
 
     #MERENI UNIKU
     crowd1_data = pd.read_csv('./data/crowd_1_data.csv', delimiter=';')
-    crowd1_time_s = 104
+    crowd1_time_s = 60
 
     crowd2_data = pd.read_csv('./data/crowd_2_data.csv', delimiter=';')
     crowd2_time_s = 117
@@ -431,14 +456,14 @@ if __name__ == '__main__':
     static1_data = pd.read_csv('./data/static_1_data.csv', delimiter=';').values.tolist()
     static2_data = pd.read_csv('./data/static_2_data.csv', delimiter=';').values.tolist()
     static3_data = pd.read_csv('./data/static_3_data.csv', delimiter=';').values.tolist()
-    static_data = static1_data + static2_data + static3_data
+    static_data = [static1_data, static2_data, static3_data]
     static_time_s = 58
 
-    logging.info("Static")
-    small_scale_static(static_data, static_time_s)
+    # logging.info("Static")
+    # small_scale_static(static_data, static_time_s)
 
-    logging.info("Crowd")
-    small_scale_crowd(crowd2_data, crowd2_time_s)
+    # logging.info("Crowd")
+    # small_scale_crowd(crowd2_data, crowd2_time_s)
 
     logging.info("Dense")
     small_scale_dense(crowd1_data, crowd1_time_s)
