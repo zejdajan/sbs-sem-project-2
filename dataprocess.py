@@ -115,6 +115,8 @@ def small_scale_crowd(measuredRx_df, time_s):
     plt.savefig('figures/Crowd_scenario3')
     plt.show()
 
+    return xcdf, ycdf
+
 def small_scale_dense(measuredRx_df, time_s):
     max_dB = list()
     for row in measuredRx_df.iterrows():
@@ -216,6 +218,7 @@ def small_scale_dense(measuredRx_df, time_s):
     plt.savefig('figures/Dense_scenario3')
 
     plt.show()
+    return xcdf, ycdf
 
 def small_scale_static(data, time_s):
     meas_dB = [[], [], []]
@@ -304,6 +307,7 @@ def small_scale_static(data, time_s):
     plt.grid()
     plt.savefig('figures/Static_scenario3')
     plt.show()
+    return xcdf, ycdf
 
 def large_scale(name,measuredRx_df, time_df, distance, d_start=20, d_stop=None, flip=0):
     max_dB = list()
@@ -459,11 +463,28 @@ if __name__ == '__main__':
     static_data = [static1_data, static2_data, static3_data]
     static_time_s = 58
 
-    # logging.info("Static")
-    # small_scale_static(static_data, static_time_s)
+    logging.info("Static")
+    xcdf, ycdf = small_scale_static(static_data, static_time_s)
 
-    # logging.info("Crowd")
-    # small_scale_crowd(crowd2_data, crowd2_time_s)
+    logging.info("Crowd")
+    xcdf1, ycdf1 = small_scale_crowd(crowd2_data, crowd2_time_s)
 
     logging.info("Dense")
-    small_scale_dense(crowd1_data, crowd1_time_s)
+    xcdf2, ycdf2 = small_scale_dense(crowd1_data, crowd1_time_s)
+
+    x_lin = np.arange(np.power(10.0, -60/20), np.power(10.0, 10/20), 0.01)
+    x_log_rayleigh_norm = 20.0*np.log10(x_lin/sst.rayleigh.median())
+    y_rayleigh = sst.rayleigh.cdf(x_lin)
+    plt.semilogy(x_log_rayleigh_norm, 100*y_rayleigh, label='Rayleigh (Rice k=0)')
+
+    plt.semilogy(xcdf, 100*ycdf, label='Static', linewidth=3)
+    plt.semilogy(xcdf1, 100*ycdf1, label='Crowd', linewidth=3)
+    plt.semilogy(xcdf2, 100*ycdf2, label='Dense', linewidth=3)
+    plt.axvline(x=0)
+    plt.axhline(y=50)
+    plt.ylim([10E-1, 100])
+    plt.xlim([-30, 10])
+    plt.legend()
+    plt.grid()
+    plt.savefig('figures/all_scenario')
+    plt.show()
