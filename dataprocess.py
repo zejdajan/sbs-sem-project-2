@@ -280,7 +280,7 @@ def small_scale_static(data, time_s):
     plt.savefig('figures/Static_scenario3')
     plt.show()
 
-def large_scale(name,measuredRx_df, time_df, distance, d_start=20, flip=0):
+def large_scale(name,measuredRx_df, time_df, distance, d_start=20, d_stop=None, flip=0):
     max_dB = list()
     for row in measuredRx_df.iterrows():
         max_dB.append(max(row[1]))
@@ -291,10 +291,15 @@ def large_scale(name,measuredRx_df, time_df, distance, d_start=20, flip=0):
 
     distances = np.linspace(1, distance, time_df.shape[1])[:len(max_dB)]
     start = (d_start * len(distances) // distance)
-    distances = distances[start:]
+    if d_stop is None:
+        stop = (distance * len(distances) // distance)
+    else:
+        stop = (d_stop * len(distances) // distance)
+    distances = distances[start:stop]
 
     # measured PL
-    measuredPL = (max_dB[start] - np.array(max_dB[start:])) + (max_dB[start] - max_dB[len(max_dB) - 1])
+    fspl = 20 * np.log10(1E-3) + 20 * np.log10(1) + 92.45  # free space path lost at 1 m (far field)
+    measuredPL = (max_dB[start] - np.array(max_dB[start:stop])) + fspl 
     win=50 # slide window should consider the wavelength and environment
     measuedPLf=[]
     for i in range(len(measuredPL)):
@@ -313,7 +318,7 @@ def large_scale(name,measuredRx_df, time_df, distance, d_start=20, flip=0):
     logging.info(f"sigma = {sigma} dB")
     logging.info(f"L1 = {L1} dB")
 
-    plt.plot(distances, max_dB[start:])
+    plt.plot(distances, max_dB[start:stop])
     plt.title('Signal Strength vs. Distance')
     plt.xlabel('Distance [m]')
     plt.ylabel('RSS [dB]')
@@ -381,8 +386,7 @@ def large_scale(name,measuredRx_df, time_df, distance, d_start=20, flip=0):
 
 if __name__ == '__main__':
 
-    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S', 
-                        filename='dataprocess.log')
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S')
 
 
     #DOLU
@@ -394,10 +398,10 @@ if __name__ == '__main__':
     terronska_down_data = pd.read_csv('./data/terronska_dolu_data.csv', delimiter=';')  # pd.read_csv('./data/partyzanu_dolu_data.csv', delimiter=';')
     terronska_down_dist = 350  # meters
 
-    logging.info("Large Scale - Partyzanu dolu")
-    large_scale("partyzanu_dolu",partyzanu_down_data, partyzanu_down_time, partyzanu_down_dist, d_start=40)
-    logging.info("Large Scale - Terronska dolu")
-    large_scale("terronska_dolu",terronska_down_data, terronska_down_time, terronska_down_dist, d_start=40)
+    # logging.info("Large Scale - Partyzanu dolu")
+    # large_scale("partyzanu_dolu",partyzanu_down_data, partyzanu_down_time, partyzanu_down_dist, d_start=40)
+    # logging.info("Large Scale - Terronska dolu")
+    # large_scale("terronska_dolu",terronska_down_data, terronska_down_time, terronska_down_dist, d_start=40, d_stop=200)
 
 
 
@@ -410,11 +414,11 @@ if __name__ == '__main__':
     terronska_up_data = pd.read_csv('./data/terronska_nahoru_data.csv',delimiter=';')
     terronska_up_dist = 350  # meters
 
-    logging.info("Large Scale - Partyzanu nahoru")
-    large_scale("partyzanu_nahoru", partyzanu_up_data, partyzanu_up_time, partyzanu_up_dist, d_start=40,flip=1)
+    # logging.info("Large Scale - Partyzanu nahoru")
+    # large_scale("partyzanu_nahoru", partyzanu_up_data, partyzanu_up_time, partyzanu_up_dist, d_start=40,flip=1)
 
-    logging.info("Large Scale - Terronska nahoru")
-    large_scale("terronska_nahoru", terronska_up_data, terronska_up_time, terronska_up_dist, d_start=40,flip=1)
+    # logging.info("Large Scale - Terronska nahoru")
+    # large_scale("terronska_nahoru", terronska_up_data, terronska_up_time, terronska_up_dist, d_start=40, d_stop=200, flip=1)
 
 
     #MERENI UNIKU
