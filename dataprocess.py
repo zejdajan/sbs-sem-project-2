@@ -225,13 +225,38 @@ def small_scale_static(data, time_s):
     for i, lst in enumerate(data):
         for d in lst:
             meas_dB[i].append(max(d))
-        meas_dB[i] = np.array(meas_dB[i]) - np.median(meas_dB[i])
 
     max_dB = list()
     for m in meas_dB:
         for val in m:
             max_dB.append(val)
     t = np.linspace(0, time_s, len(max_dB))
+
+    start = (5 * len(t) // time_s)
+    stop = (10 * len(t) // time_s)
+    stop2 = (20 * len(t) // time_s)
+    stop3 = (30 * len(t) // time_s)
+    max_dB1 = max_dB[:start]
+    max_dB2 = max_dB[start:stop]
+    max_dB3 = max_dB[stop:stop2]
+    max_dB4 = max_dB[stop2:stop3]
+    max_dB5 = max_dB[stop3:]
+
+    mean1 = np.mean(max_dB1)
+    mean2 = np.mean(max_dB2)
+    mean3 = np.mean(max_dB3)
+    mean4 = np.mean(max_dB4)
+    mean5 = np.mean(max_dB5)
+    norm1 = mean1 - mean2
+    norm2 = mean1 - mean3
+    norm3 = mean1 - mean4
+    norm4 = mean1 - mean5
+    max_dB_tmp = [max_dB1, max_dB2 + norm1, max_dB3 + norm2, max_dB4 + norm3, max_dB5 + norm4]
+
+    max_dB = list()
+    for m in max_dB_tmp:
+        for val in m:
+            max_dB.append(val)
 
     logging.info(f"Max: {np.max(max_dB)} dB")
     logging.info(f"Min: {np.min(max_dB)} dB")
@@ -244,7 +269,7 @@ def small_scale_static(data, time_s):
     plt.grid()
     plt.savefig('figures/Static_scenario1_Measured')
     plt.show()
-   # max_dB = max_dB - np.median(max_dB) # normalize to median
+    max_dB = max_dB - np.median(max_dB) # normalize to median
 
     plt.plot(t, max_dB)
     plt.xlabel('Time (s)')
