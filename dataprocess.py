@@ -452,10 +452,10 @@ if __name__ == '__main__':
     terronska_down_data = pd.read_csv('./data/terronska_dolu_data.csv', delimiter=';')  # pd.read_csv('./data/partyzanu_dolu_data.csv', delimiter=';')
     terronska_down_dist = 350  # meters
 
-    # logging.info("Large Scale - Partyzanu dolu")
-    # large_scale("partyzanu_dolu",partyzanu_down_data, partyzanu_down_time, partyzanu_down_dist, d_start=40)
-    # logging.info("Large Scale - Terronska dolu")
-    # large_scale("terronska_dolu",terronska_down_data, terronska_down_time, terronska_down_dist, d_start=40, d_stop=200)
+    logging.info("Large Scale - Partyzanu dolu")
+    large_scale("partyzanu_dolu",partyzanu_down_data, partyzanu_down_time, partyzanu_down_dist, d_start=40)
+    logging.info("Large Scale - Terronska dolu")
+    large_scale("terronska_dolu",terronska_down_data, terronska_down_time, terronska_down_dist, d_start=40, d_stop=200)
 
 
 
@@ -468,11 +468,11 @@ if __name__ == '__main__':
     terronska_up_data = pd.read_csv('./data/terronska_nahoru_data.csv',delimiter=';')
     terronska_up_dist = 350  # meters
 
-    # logging.info("Large Scale - Partyzanu nahoru")
-    # large_scale("partyzanu_nahoru", partyzanu_up_data, partyzanu_up_time, partyzanu_up_dist, d_start=40,flip=1)
+    logging.info("Large Scale - Partyzanu nahoru")
+    large_scale("partyzanu_nahoru", partyzanu_up_data, partyzanu_up_time, partyzanu_up_dist, d_start=40,flip=1)
 
-    # logging.info("Large Scale - Terronska nahoru")
-    # large_scale("terronska_nahoru", terronska_up_data, terronska_up_time, terronska_up_dist, d_start=40, d_stop=200, flip=1)
+    logging.info("Large Scale - Terronska nahoru")
+    large_scale("terronska_nahoru", terronska_up_data, terronska_up_time, terronska_up_dist, d_start=40, d_stop=200, flip=1)
 
 
     #MERENI UNIKU
@@ -488,23 +488,24 @@ if __name__ == '__main__':
     static_data = [static1_data, static2_data, static3_data]
     static_time_s = 58
 
-    logging.info("Static")
+    logging.info("Bez zastínení")
     xcdf, ycdf = small_scale_static(static_data, static_time_s)
 
-    logging.info("Crowd")
+    logging.info("Dynamické zastínění")
     xcdf1, ycdf1 = small_scale_crowd(crowd2_data, crowd2_time_s)
 
-    logging.info("Dense")
+    logging.info("Úplné zastínění")
     xcdf2, ycdf2 = small_scale_dense(crowd1_data, crowd1_time_s)
 
     x_lin = np.arange(np.power(10.0, -60/20), np.power(10.0, 10/20), 0.01)
     x_log_rayleigh_norm = 20.0*np.log10(x_lin/sst.rayleigh.median())
     y_rayleigh = sst.rayleigh.cdf(x_lin)
     plt.semilogy(x_log_rayleigh_norm, 100*y_rayleigh, label='Rayleigh (Rice k=0)')
-
-    plt.semilogy(xcdf, 100*ycdf, label='Static', linewidth=3)
-    plt.semilogy(xcdf1, 100*ycdf1, label='Crowd', linewidth=3)
-    plt.semilogy(xcdf2, 100*ycdf2, label='Dense', linewidth=3)
+    plt.xlabel('Relative loss (dB), normalized (0 dB at 50%)')
+    plt.ylabel('Cumulative probability (%)')
+    plt.semilogy(xcdf, 100*ycdf, label='Bez zastínení', linewidth=3)
+    plt.semilogy(xcdf1, 100*ycdf1, label='Dynamické zastínění', linewidth=3)
+    plt.semilogy(xcdf2, 100*ycdf2, label='Úplné zastínění', linewidth=3)
     plt.axvline(x=0)
     plt.axhline(y=50)
     plt.ylim([10E-1, 100])
